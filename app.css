@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+
+:root {
+    --background-color: #252525;
+    --font-color: #ffffff;
+    --accent-color: #F6770F;
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Anton', sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    background-color: var(--background-color);
+    color: var(--font-color);
+    margin: 64px auto 64px auto;
+	max-width: 960px;
+	text-align: center;
+}
+
+h1 {
+	margin: 0 0 48px 0;
+    font-size: 4rem;
+}
+
+span {
+	margin-inline: 8px;
+}
