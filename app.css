@@ -26,3 +26,9 @@ h1 {
 span {
 	margin-inline: 8px;
 }
+
+.players circle {
+    fill: var(--font-color);
+    stroke: var(--accent-color);
+    stroke-width: 3px;    
+}
