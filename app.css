@@ -30,5 +30,9 @@ span {
 .players circle {
     fill: var(--font-color);
     stroke: var(--accent-color);
-    stroke-width: 3px;    
+    stroke-width: 3px;
+}
+
+.photo {
+    border-radius: 100;
 }

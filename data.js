@@ -31,15 +31,15 @@ const getStats = function () {
     let valueY = "apps"
 
     const scaleX = d3.scaleLinear()
-        .domain([0, 10])
+        .domain([0, 20])
         .range([100, 860])
 
     const scaleY = d3.scaleLinear()
-        .domain([0, 10])
+        .domain([0, 20])
         .range([620, 100])
     
 
-    return fetch(`https://api-football-v1.p.rapidapi.com/v3/players?id=18819&season=2021`, {
+    return fetch(`https://api-football-v1.p.rapidapi.com/v3/players/topscorers?season=2021&league=39`, {
         "method": "GET",
         "headers": {
             "x-rapidapi-host": apiHost,
@@ -49,21 +49,24 @@ const getStats = function () {
 
     // getting the total goals and appearences from the fetch request
     .then(response => response.json()) 
-    .then(data => {
+    .then( data => {
         return data.response.map(response => {
             data = response.statistics.map( statistic => {
                 return {
                     goals: statistic.goals.total,
                     apps: statistic.games.appearences,
-                } 
-                
+                    name: response.player.name,
+                    photo: response.player.photo
+                }
             })
+
+            console.log(data)
 
             // creating players groups within our svg whose positions are decided by the
             // data given back from the API
             const players = svg 
                 .selectAll("g.players")
-                .data(data)
+                .data(data, (d, i) => { return d.name})
                 .enter()
                 .append("g")
                 .attr("class", "players")
@@ -75,11 +78,14 @@ const getStats = function () {
 
             // creating a circle element within the players group for the visualisation
             players
-                .append("circle")
-                .attr("cx", 0)
-                .attr("cy", 0)
-                .attr("r", 15)   
-            
+                .append("image")
+                .attr("class", "photo")
+                .attr("xlink:href", (d, i) => {return `${d.photo}`})
+                .attr("x", "0")
+                .attr("y", "0")
+                .attr("width", "50")
+                .attr("height", "50")
+                
         })
         
     })
@@ -87,6 +93,12 @@ const getStats = function () {
 }
 
 getStats()
+
+
+ 
+
+
+
 
 
 
