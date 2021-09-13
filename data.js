@@ -57,18 +57,14 @@ const getStats = function () {
                     goals: statistic.goals.total,
                     minutes: statistic.games.minutes,
                     name: response.player.name,
-                    photo: response.player.photo
+                    photo: response.player.photo,
+                    id: response.player.id
                 }
             })
 
             // creating players groups within our svg whose positions are decided by the
             // data given back from the API
 
-            
-
-
-            console.log(response.player.photo)
-            
             const players = svg
                 .selectAll("g.players")
                 .data(data, (d, i) => { return d.name})
@@ -81,6 +77,9 @@ const getStats = function () {
                     return `translate(${x}, ${y})`
                 })
             
+
+            // to display the players photo in the circle we needed to create a pattern and image
+            // within a defs tag   
             const defs = players
                 .append("defs")
 
@@ -89,31 +88,48 @@ const getStats = function () {
                 .data(data)   
                 .enter() 
                 .append("pattern")
-                .attr("id", "image")
-                // d.photo returns the player URL eg: https://media.api-sports.io/football/players/897.png
+                .attr("width", 40)
+                .attr("height", 40)
+                .attr("id", (d, i) => {return `image-${d.id}`})
+                .append("image")
+                .attr("class", "player-image")
                 .attr("xlink:href", (d, i) => { return d.photo })
                 .attr("x", 0)
                 .attr("y", 0)
-                .attr("width", 40)
-                .attr("height", 40)
+                .attr("width", 50)
+                .attr("height", 50)
  
             players
                 .append("circle")
                 .attr("cx", 0)
                 .attr("cy", 0)
                 .attr("r", 0)
+                .attr("class", "player-circle")
                 .transition()
-                .attr("r", 15)
-                .style("fill", "transparent")       
-                .style("stroke", "black")     
+                .attr("r", 25)       
+                .style("stroke", "#ff0000")     
                 .style("stroke-width", 0.25)
-                .style("fill", "url(#image)")
+                .style("fill", (d, i) => {return `url(#image-${d.id}`})
+
+            players
+                .append("rect")
+                .attr("x", -60)
+                .attr("y", -60)
+                .attr("width", 120)
+                .attr("height", 30)
+            
+            players
+                .append("text")
+                .attr("x", 0)
+                .attr("y", -39)
+                .text((d,i) => { return d.name})    
         })
         
     })
 
 }
 
+// running the function when the page loads
 getStats()
 
 
