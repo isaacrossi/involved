@@ -1,14 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
 
 :root {
     --background-color: #252525;
-    --font-color: #ffffff;
+    --font-color: #FF7B0B;
     --accent-color: #F6770F;
     font-size: 16px;
 }
 
 body {
-    font-family: 'Anton', sans-serif;
+    font-family: 'Staatliches', cursive;
     font-size: 1rem;
     line-height: 1.5;
     background-color: var(--background-color);
@@ -33,6 +33,21 @@ span {
     stroke-width: 3px;
 }
 
-.photo {
-    border-radius: 100;
+text.x-axis,
+text.y-axis {
+	fill: var(--font-color);
+	font-size: 24px;
+	text-anchor: middle;
 }
+
+g.players rect {
+	fill: var(--primary-color);
+	opacity: 0;
+	transition: opacity 0.25s;
+}
+
+g.players:hover rect,
+g.players:hover text {
+	opacity: 1;
+}
+
