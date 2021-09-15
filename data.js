@@ -27,19 +27,6 @@ const axisYText = svg
 
 // fetching a response from api-football.
 const getStats = function () {
-
-    let valueX = "minutes"
-    let valueY = "goals"
-
-    const scaleX = d3.scaleLinear()
-        .domain([0, 500])
-        .range([100, 860])
-
-    const scaleY = d3.scaleLinear()
-        .domain([0, 30])
-        .range([620, 100])
-    
-
     return fetch(`https://api-football-v1.p.rapidapi.com/v3/players/topscorers?season=2021&league=39`, {
         "method": "GET",
         "headers": {
@@ -52,7 +39,7 @@ const getStats = function () {
     .then(response => response.json()) 
     .then( data => {
         return data.response.map(response => {
-            data = response.statistics.map( statistic => {
+            data = response.statistics.map(statistic => {
                 return {
                     goals: statistic.goals.total,
                     minutes: statistic.games.minutes,
@@ -61,6 +48,27 @@ const getStats = function () {
                     id: response.player.id
                 }
             })
+            
+
+            let valueX = "minutes"
+            let valueY = "goals"
+            
+            
+            // getting the max and min values to scale the data properly
+            let maxValueX = d3.max(data, (d, i) => { return d[valueX] })
+            let maxValueY = d3.max(data, (d, i) => { return d[valueY] })
+
+            
+
+    // creating our scales so the circles are displayed correctly on the data viz
+            const scaleX = d3.scaleLinear()
+                .domain([0, 500])
+                .range([100, 860])
+
+            const scaleY = d3.scaleLinear()
+                .domain([0, 20])
+                .range([620, 100])
+    
 
             // creating players groups within our svg whose positions are decided by the
             // data given back from the API
@@ -72,14 +80,14 @@ const getStats = function () {
                 .append("g")
                 .attr("class", "players")
                 .attr("transform", (d, i) => {
-                    const x = scaleX(d.minutes)
-                    const y = scaleY(d.goals)
+                    const x = scaleX(d[valueX])
+                    const y = scaleY(d[valueY])
                     return `translate(${x}, ${y})`
                 })
-            
+                
 
             // to display the players photo in the circle we needed to create a pattern and image
-            // within a defs tag   
+            // within a defs tag (this is what svgs expect)
             const defs = players
                 .append("defs")
 
@@ -107,10 +115,11 @@ const getStats = function () {
                 .attr("class", "player-circle")
                 .transition()
                 .attr("r", 25)       
-                .style("stroke", "#ff0000")     
-                .style("stroke-width", 0.25)
                 .style("fill", (d, i) => {return `url(#image-${d.id}`})
 
+             
+                
+            // here we  create the rectangle that shows on hover
             players
                 .append("rect")
                 .attr("x", -60)
@@ -118,11 +127,20 @@ const getStats = function () {
                 .attr("width", 120)
                 .attr("height", 30)
             
+            // this is the text that shows in the rectangle
             players
                 .append("text")
                 .attr("x", 0)
                 .attr("y", -39)
-                .text((d,i) => { return d.name})    
+                .text((d,i) => { return d.name})  
+            
+            // raise the player circles when we hover over them
+            svg
+                .selectAll("g.players")
+                .on("mouseover", function () {
+                  d3.select(this).raise()
+                })    
+                
         })
         
     })

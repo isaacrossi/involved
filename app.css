@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Staatliches&display=swap');
 
 :root {
-    --background-color: #fff9f9;
-    --font-color: #ff0000;
+    --background-color: #FCFFF7;
+    --font-color: #960811;
     --accent-color: #F6770F;
     font-size: 16px;
 }
@@ -28,8 +28,7 @@ span {
 }
 
 .players circle {
-    fill: var(--font-color);
-    stroke: var(--accent-color);
+    stroke: var(--font-color);
     stroke-width: 3px;
 }
 
