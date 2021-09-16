@@ -66,23 +66,33 @@ const axisXText = svg
     .append("text")
     .attr("class", "x-axis")
     .attr("transform", "translate(480, 670)")
-    .text("Number of minutes played")
+    .text("Axis X")
 
 // creating a text element within the svg for the y-axis    
 const axisYText = svg 
     .append("text")
     .attr("class", "y-axis")
     .attr("transform", "translate(30, 360) rotate(-90)")
-    .text("Total number of goals")
+    .text("Axis Y")
 
  
 const loadPlayers = function (data) {
 
+    // getting our input values
     let inputX = document.querySelector("select[name=valueX]")
     let inputY = document.querySelector("select[name=valueY]")
 
+    // setting our values as the currently selected inputs
     let valueX = inputX.value
     let valueY = inputY.value
+
+    // this gets the inner html of our input selections
+    let textX = inputX.options[inputX.selectedIndex].innerHTML
+    let textY = inputX.options[inputY.selectedIndex].innerHTML
+
+    // setting the text of our axes as the text x and text y values.
+    axisXText.text(textX)
+    axisYText.text(textY)
 
     //getting the max and min values to scale the data properly
         
