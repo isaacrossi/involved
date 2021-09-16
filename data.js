@@ -43,20 +43,26 @@ const getStats = function () {
                 data = {
                     goals: statistic.goals.total,
                     minutes: statistic.games.minutes,
+                    apps: statistic.games.appearences,
+                    shots: statistic.shots.total,
+                    on: statistic.shots.on,
+                    pens: statistic.penalty.scored,
                     name: response.player.name,
                     photo: response.player.photo,
                     id: response.player.id
                 } 
                    
             })
-            
+
             return data
+
         })
         
     })
-
+   
 }
- 
+
+
 const loadPlayers = function (data) {
 
     let valueX = "minutes"
