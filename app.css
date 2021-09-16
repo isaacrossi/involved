@@ -87,3 +87,22 @@ path.domain {
         font-size: 2rem;
     }
 }
+
+@media (max-width: 440px) {
+
+    form {
+        display: flex;
+        flex-direction: column;
+        max-width: 50%;
+        margin: auto;
+    }
+
+    form span {
+        margin-block: 0.5rem;
+    }
+    
+    text {
+        font-size: 1rem;
+    }
+    
+}
