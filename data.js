@@ -50,6 +50,17 @@ svg
     .attr("width", "960")
     .attr("height", "720")
 
+// making a group for the axis so we can use it and update it when we place the players
+const axisXGroup =  svg
+    .append("g")
+    .attr("class", "x-axis")
+    .attr("transform", "translate (0, 620)")
+
+const axisYGroup =  svg
+    .append("g")
+    .attr("class", "y-axis") 
+    .attr("transform", "translate(100, 0)")
+
 // creating a text element within the svg for the x-axis
 const axisXText = svg 
     .append("text")
@@ -63,7 +74,8 @@ const axisYText = svg
     .attr("class", "y-axis")
     .attr("transform", "translate(30, 360) rotate(-90)")
     .text("Total number of goals")
-    
+
+ 
 const loadPlayers = function (data) {
 
     let inputX = document.querySelector("select[name=valueX]")
@@ -71,8 +83,6 @@ const loadPlayers = function (data) {
 
     let valueX = inputX.value
     let valueY = inputY.value
-
-    console.log(valueX)
 
     //getting the max and min values to scale the data properly
         
@@ -88,10 +98,20 @@ const loadPlayers = function (data) {
         .domain([0, maxValueY])
         .range([620, 100])
 
+    //creating our x axis and attaching our scale
+    const axisX = d3.axisBottom(scaleX)
+    
+    // creating our y axis and attaching our scale
+    const axisY = d3.axisLeft(scaleY)
+    
+    // this attaches our x axis to our axisXGroup
+    axisXGroup.call(axisX)
+
+    // this attaches our y axis to our axisYGroup
+    axisYGroup.call(axisY)
 
     // creating players groups within our svg whose positions are decided by the
     // data given back from the API
-
     const players = svg
         .selectAll("g.players")
         .data(data, (d, i) => { return d.name})
@@ -140,6 +160,8 @@ const loadPlayers = function (data) {
     // for any data thats already been added above
     svg
         .selectAll("g.players")
+        .transition()
+        .duration(750)
         .attr("transform", (d, i) => {
             const x = scaleX(d[valueX])
             const y = scaleY(d[valueY])
