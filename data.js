@@ -100,9 +100,17 @@ const loadPlayers = function (data) {
 
     //creating our x axis and attaching our scale
     const axisX = d3.axisBottom(scaleX)
+        .tickSizeInner(-520)
+        .tickSizeOuter(0)
+        .tickPadding(10)
+        .ticks(10, ".0f")
     
     // creating our y axis and attaching our scale
     const axisY = d3.axisLeft(scaleY)
+        .tickSizeInner(-760)
+        .tickSizeOuter(0)
+        .tickPadding(10)
+        .ticks(10, ".0f")
     
     // this attaches our x axis to our axisXGroup
     axisXGroup.call(axisX)
