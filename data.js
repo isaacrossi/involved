@@ -1,29 +1,6 @@
 const apiHost = "api-football-v1.p.rapidapi.com/v3"
 const apiKey = "ed258403cfmsh30f5a085abc2d2ep1858afjsnf5d899d5c50c"
 
-// grab the svg tag from index.html
-const svg = d3.select("svg")
-
-// apply a width and height to the svg
-svg
-    .attr("width", "960")
-    .attr("height", "720")
-
-// creating a text element within the svg for the x-axis
-const axisXText = svg 
-    .append("text")
-    .attr("class", "x-axis")
-    .attr("transform", "translate(480, 670)")
-    .text("Number of minutes played")
-
-// creating a text element within the svg for the y-axis    
-const axisYText = svg 
-    .append("text")
-    .attr("class", "y-axis")
-    .attr("transform", "translate(30, 360) rotate(-90)")
-    .text("Total number of goals")    
-
-
 // fetching a response from api-football.
 const getStats = function () {
 
@@ -62,11 +39,40 @@ const getStats = function () {
    
 }
 
+// select all of the select boxes
+const selectTags = document.querySelectorAll("select") 
 
+// grab the svg tag from index.html
+const svg = d3.select("svg")
+
+// apply a width and height to the svg
+svg
+    .attr("width", "960")
+    .attr("height", "720")
+
+// creating a text element within the svg for the x-axis
+const axisXText = svg 
+    .append("text")
+    .attr("class", "x-axis")
+    .attr("transform", "translate(480, 670)")
+    .text("Number of minutes played")
+
+// creating a text element within the svg for the y-axis    
+const axisYText = svg 
+    .append("text")
+    .attr("class", "y-axis")
+    .attr("transform", "translate(30, 360) rotate(-90)")
+    .text("Total number of goals")
+    
 const loadPlayers = function (data) {
 
-    let valueX = "minutes"
-    let valueY = "goals"
+    let inputX = document.querySelector("select[name=valueX]")
+    let inputY = document.querySelector("select[name=valueY]")
+
+    let valueX = inputX.value
+    let valueY = inputY.value
+
+    console.log(valueX)
 
     //getting the max and min values to scale the data properly
         
@@ -97,10 +103,10 @@ const loadPlayers = function (data) {
             const y = scaleY(d[valueY])
             return `translate(${x}, ${y})`
             })
-            
+    
 
-        // to display the players photo in the circle we needed to create a pattern and image
-        // within a defs tag (this is what svgs expect)
+    // to display the players photo in the circle we needed to create a pattern and image
+    // within a defs tag (this is what svgs expect)
     const defs = players
         .append("defs")
 
@@ -130,8 +136,17 @@ const loadPlayers = function (data) {
         .attr("r", 25)       
         .style("fill", (d, i) => {return `url(#image-${d.id}`})
 
-         
-            
+    // this makes the player groups reposition themselves when we change the input value
+    // for any data thats already been added above
+    svg
+        .selectAll("g.players")
+        .attr("transform", (d, i) => {
+            const x = scaleX(d[valueX])
+            const y = scaleY(d[valueY])
+            return `translate(${x}, ${y})`
+        })              
+
+       
     // here we  create the rectangle that shows on hover
     players
         .append("rect")
@@ -156,15 +171,21 @@ const loadPlayers = function (data) {
 
 }
 
-// running the function when the page loads
-
-
-
+// populating data when the page loads
 getStats()
     .then(data => {
         loadPlayers(data)
     })
 
+// populate data when we change our input
+selectTags.forEach((selectTag) => {
+    selectTag.addEventListener("change", function () {
+        getStats()
+            .then(data => {
+                loadPlayers(data)
+        })
+    })
+})
 
  
 
