@@ -47,8 +47,7 @@ const svg = d3.select("svg")
 
 // apply a width and height to the svg
 svg
-    .attr("width", "960")
-    .attr("height", "720")
+  .attr("viewBox", "0 0 960 720")
 
 // making a group for the axis so we can use it and update it when we place the players
 const axisXGroup =  svg
