@@ -1,6 +1,15 @@
 const apiHost = "api-football-v1.p.rapidapi.com/v3"
 const apiKey = "ed258403cfmsh30f5a085abc2d2ep1858afjsnf5d899d5c50c"
 
+// error handling 
+
+function handleErrors(response) {
+    if (!response.ok) {
+        throw Error(response.statusText);
+    }
+    return response;
+}
+
 // fetching a response from api-football.
 const getStats = function () {
 
@@ -13,6 +22,7 @@ const getStats = function () {
     })
 
     // getting the total goals, shots, name, and photo from the fetch request
+    .then(handleErrors)
     .then(response => response.json()) 
     .then( data => {
         return data.response.map(response => {
@@ -27,16 +37,16 @@ const getStats = function () {
                     name: response.player.name,
                     photo: response.player.photo,
                     id: response.player.id
-                } 
-                   
+                }    
             })
-
             return data
-
         })
         
     })
-   
+    .catch(function (error) {
+        console.log(error)
+        alert("there was an error getting the player statistics :( ")
+    })
 }
 
 // select all of the select boxes
