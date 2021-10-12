@@ -74,7 +74,7 @@ const axisYGroup =  svg
 const axisXText = svg 
     .append("text")
     .attr("class", "x-axis")
-    .attr("transform", "translate(480, 670)")
+    .attr("transform", "translate(480, 700)")
     .text("Axis X")
 
 // creating a text element within the svg for the y-axis    
